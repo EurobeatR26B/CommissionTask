@@ -4,14 +4,13 @@ declare (strict_types=1);
 
 namespace Justas\CommissionTask;
 
+use Justas\CommissionTask\Operation\OperationParser;
+
 require ("vendor/autoload.php");
+
 
 $csv = new FileInput\CsvReader();
 $csv->setFileName("input.csv");
 
-
-foreach ($csv->getLine() as $line)
-{
-    var_dump($line);
-    readline();
-}
+$operationParser = new OperationParser($csv);
+$operationParser->parseFile();
