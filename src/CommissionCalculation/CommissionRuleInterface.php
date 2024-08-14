@@ -9,5 +9,5 @@ use Justas\CommissionTask\Operation\UserOperationTracker;
 
 interface CommissionRuleInterface
 {
-    public function calculate(Operation $operation, UserOperationTracker $operationTracker);
+    public function calculate(Operation $operation): float;
 }

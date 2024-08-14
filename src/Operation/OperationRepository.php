@@ -23,7 +23,7 @@ class OperationRepository
         return $this->operationMap[$userID];
     }
 
-    public function getOperationsByUserAndWeek(int $userID, int $week)
+    public function getOperationsByUserAndPeriod(int $userID, int $week)
     {
         $userOperationsThisWeek = [];
 

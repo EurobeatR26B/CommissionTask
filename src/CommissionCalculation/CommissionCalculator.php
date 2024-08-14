@@ -22,7 +22,7 @@ class CommissionCalculator
             UserType::PRIVATE => match ($operation->getOperationType())
             {
                 OperationType::DEPOSIT => new PrivateDepositRule(),
-                OperationType::WITHDRAW => new PrivateDepositRule()
+                OperationType::WITHDRAW => new PrivateWithdrawRule($this->operationTracker)
             },
             UserType::BUSINESS => match ($operation->getOperationType())
             {
@@ -31,14 +31,14 @@ class CommissionCalculator
             },
         };
 
-        return $commissionRule->calculate($operation, $operationTracker);
+        return $commissionRule->calculate($operation, $this->operationTracker);
 
 
-        echo "Calculating for " . $operation->__toString() . '...' . PHP_EOL;
-        $this->operationTracker->addCompletedOperation($operation);
+        // echo "Calculating for " . $operation->__toString() . '...' . PHP_EOL;
+        // $this->operationTracker->addCompletedOperation($operation);
 
-        $operationCount = $this->operationTracker->getUserOperationCountThisWeek($operation);
-        $operationAmount = $this->operationTracker->getUserOperationSumThisWeek($operation);
-        echo "So far, this user has done " . $operationCount . " operations this week, totaling " . $operationAmount . " EUR..." . PHP_EOL;
+        // $operationCount = $this->operationTracker->getUserOperationCountThisPeriod($operation);
+        // $operationAmount = $this->operationTracker->getUserOperationSumThisPeriod($operation);
+        // echo "So far, this user has done " . $operationCount . " operations this week, totaling " . $operationAmount . " EUR..." . PHP_EOL;
     }
 }

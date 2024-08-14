@@ -14,8 +14,12 @@ class PrivateDepositRule implements CommissionRuleInterface
         
     }
 
-    public function calculate(Operation $operation, UserOperationTracker $operationTracker)
+    public function calculate(Operation $operation): float
     {
-        
+        $commissionRate = COMMISSION_PRIVATE_DEPOSIT;
+        $commissionAmount = $operation->getAmount() * $commissionRate;
+        $commissionAmount = round($commissionAmount, COMMISSION_ROUNDING_PRECISION);
+
+        return $commissionAmount;
     }
 }

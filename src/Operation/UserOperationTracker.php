@@ -27,14 +27,14 @@ class UserOperationTracker
         return 
         $operation->getOperationType() === OperationType::WITHDRAW &&
         $operation->getUserType() === UserType::PRIVATE &&
-        ($this->getUserOperationCountThisWeek($operation) <= FREE_COMMISSION_PRIVATE_WITHDRAW_OPERATION_COUNT_LIMIT) && 
-        ($this->getUserOperationSumThisWeek($operation) <= FREE_COMMISSION_PRIVATE_USER_WITHDRAW_AMOUNT);
+        ($this->getUserOperationCountThisPeriod($operation) <= FREE_COMMISSION_PRIVATE_WITHDRAW_OPERATION_COUNT_LIMIT) && 
+        ($this->getUserOperationSumThisPeriod($operation) <= FREE_COMMISSION_PRIVATE_USER_WITHDRAW_AMOUNT);
     }
 
-    public function getUserOperationCountThisWeek(Operation $operation): int
+    public function getUserOperationCountThisPeriod(Operation $operation): int
     {
         $operations = $this->userOperationsRepository->
-        getOperationsByUserAndWeek(
+        getOperationsByUserAndPeriod(
             $operation->getUserID(), 
             $operation->getPeriodOfOperation()
         );
@@ -42,10 +42,10 @@ class UserOperationTracker
         return count($operations);
     }
 
-    public function getUserOperationSumThisWeek(Operation $operation): float
+    public function getUserOperationSumThisPeriod(Operation $operation): float
     {
         $operations = $this->userOperationsRepository->
-        getOperationsByUserAndWeek(
+        getOperationsByUserAndPeriod(
             $operation->getUserID(), 
             $operation->getPeriodOfOperation()
         );
