@@ -7,7 +7,9 @@
         "psr-4": {
             "Justas\\CommissionTask\\FileInput\\": "src\\FileInput",
             "Justas\\CommissionTask\\Operation\\": "src\\Operation",
-            "Justas\\CommissionTask\\User\\": "src\\User"
+            "Justas\\CommissionTask\\User\\": "src\\User",
+            "Justas\\CommissionTask\\CommissionCalculation\\": "src\\CommissionCalculation",
+            "Justas\\CommissionTask\\CurrencyConversion\\": "src\\CurrencyConversion"
         }
     },
     "autoload-dev": {

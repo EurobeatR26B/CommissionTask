@@ -27,7 +27,7 @@ class Operation
         $timestamp = strtotime($date->format('Y-m-d'));
         
         $weekNumber = ($timestamp - $unixStartTime) / $oneWeekInSeconds;
-        $weekNumber = round($weekNumber);
+        $weekNumber = (int) round($weekNumber);
 
         return $weekNumber;
     }
@@ -60,5 +60,10 @@ class Operation
     public function getCurrency(): string
     {
         return $this->currency;
+    }
+
+    public function __toString(): string
+    {
+        return trim(sprintf("%s by %s user %d on %s for %s %s", $this->operationType->name, $this->userType->name, $this->userID, $this->date->format('Y-m-d'), $this->amount, $this->currency));
     }
 }

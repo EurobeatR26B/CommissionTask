@@ -29,6 +29,7 @@ class CsvReader extends FileReader
         while (!feof($file))
         {
             $line = fgets($file);
+            $line = trim($line);
 
             $elements = explode($this->delimiter, $line);
 

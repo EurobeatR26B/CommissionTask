@@ -18,7 +18,7 @@ class OperationRepository
         $this->operationMap[$operation->getUserID()][] = $operation; 
     }
 
-    public function getOperationsByUser (int $userID)
+    public function getOperationsByUser (int $userID): array
     {
         return $this->operationMap[$userID];
     }
@@ -37,4 +37,9 @@ class OperationRepository
 
         return $userOperationsThisWeek;
     } 
+
+    public function getAll()
+    {
+        return $this->operationMap;
+    }
 }

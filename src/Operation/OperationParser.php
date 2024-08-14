@@ -16,8 +16,10 @@ class OperationParser
         $this->fileReader = $fileReader;
     }
 
-    public function parseFile()
+    public function parseFile(): OperationRepository
     {
+        $operationRepository = new OperationRepository();
+
         foreach ($this->fileReader->getLine() as $line)
         {
             $date = new DateTime($line->date);
@@ -47,7 +49,9 @@ class OperationParser
                 $currency
             );
 
-            var_dump($operation);
+            $operationRepository->addOperation($operation);
         }
+
+        return $operationRepository;
     }
 }

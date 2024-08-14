@@ -4,27 +4,31 @@ declare (strict_types=1);
 
 namespace Justas\CommissionTask\Operation;
 
-use Justas\CommissionTask\CurrencyConversion;
 use Justas\CommissionTask\CurrencyConversion\CurrencyConverterInterface;
 
 class UserOperationTracker
-{
+{    
+    public CurrencyConverterInterface $currencyConverter;
     private OperationRepository $userOperationsRepository;
-    private CurrencyConverterInterface $currencyConverter;
 
-    public function __construct(
-        private int $userID
-    ){}
+    public function __construct()
+    {
+        $this->userOperationsRepository = new OperationRepository();
+    }
 
+    public function addCompletedOperation(Operation $operation)
+    {
+        $this->userOperationsRepository->addOperation($operation);
+    }
 
-    public function isEligibleForFreeCommission(Operation $operation): bool
+    public function isOperationEligibleForFreeCommission(Operation $operation): bool
     {
         return 
         ($this->getUserOperationCountThisWeek($operation) <= 3 ) && 
         ($this->getUserOperationSumThisWeek($operation) <= 1000);
     }
 
-    private function getUserOperationCountThisWeek(Operation $operation): int
+    public function getUserOperationCountThisWeek(Operation $operation): int
     {
         $operations = $this->userOperationsRepository->
         getOperationsByUserAndWeek(
@@ -35,7 +39,7 @@ class UserOperationTracker
         return count($operations);
     }
 
-    private function getUserOperationSumThisWeek(Operation $operation): float
+    public function getUserOperationSumThisWeek(Operation $operation): float
     {
         $operations = $this->userOperationsRepository->
         getOperationsByUserAndWeek(
@@ -44,20 +48,25 @@ class UserOperationTracker
         );
         
         $total = 0;
-
+        
         foreach ($operations as $operation)
         {
-            if ($operation->getCurrency !== "EUR")
+            if ($operation->getCurrency() !== "EUR")
             {
-                $amount = $this->currencyConverter->
-                convertCurrency(
-                    $operation->getAmount(), 
-                    $operation->getCurrency(), 
-                    "EUR");
+                // $amount = $this->currencyConverter->
+                // convertCurrency(
+                //     $operation->getAmount(), 
+                //     $operation->getCurrency(), 
+                //     "EUR");
 
-                $total += $amount;
+                $amountAfterConversionToEUR = $operation->getAmount() + 1;
+                $total += $amountAfterConversionToEUR;
+            }
+            else {
+                $total += (int) $operation->getAmount();
             }
         }
+
         return $total;
     }
 }
