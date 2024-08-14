@@ -22,4 +22,19 @@ class OperationRepository
     {
         return $this->operationMap[$userID];
     }
+
+    public function getOperationsByUserAndWeek(int $userID, int $week)
+    {
+        $userOperationsThisWeek = [];
+
+        foreach ($this->operationMap[$userID] as $operation)
+        {
+            if ($operation->getWeekOfOperation() === $week)
+            {
+                $userOperationsThisWeek [] = $operation;
+            }
+        }
+
+        return $userOperationsThisWeek;
+    } 
 }

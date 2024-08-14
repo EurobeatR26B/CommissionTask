@@ -18,6 +18,19 @@ class Operation
         private string $currency
     ){ }
 
+    public function getWeekOfOperation(): int
+    {
+        $unixStartTime = strtotime('1970-01-01');
+        $oneWeekInSeconds = 60 * 60 * 24 * 7;
+
+        $date = $this->date;
+        $timestamp = strtotime($date->format('Y-m-d'));
+        
+        $weekNumber = ($timestamp - $unixStartTime) / $oneWeekInSeconds;
+        $weekNumber = round($weekNumber);
+
+        return $weekNumber;
+    }
 
     public function getDate(): DateTime
     {
