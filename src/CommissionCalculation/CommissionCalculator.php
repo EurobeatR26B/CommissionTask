@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Justas\CommissionTask\CommissionCalculation;
 
 use Justas\CommissionTask\Operation\Operation;
+use Justas\CommissionTask\Operation\OperationType;
 use Justas\CommissionTask\Operation\UserOperationTracker;
+use Justas\CommissionTask\User\UserType;
 
 class CommissionCalculator
 {
@@ -14,7 +16,24 @@ class CommissionCalculator
     ){}
 
     public function calculateCommission(Operation $operation)
-    {
+    {        
+        $commissionRule = match ($operation->getOperationType())
+        {
+            UserType::PRIVATE => match ($operation->getOperationType())
+            {
+                OperationType::DEPOSIT => new PrivateDepositRule(),
+                OperationType::WITHDRAW => new PrivateDepositRule()
+            },
+            UserType::BUSINESS => match ($operation->getOperationType())
+            {
+                OperationType::DEPOSIT => new BusinessDepositRule(),
+                OperationType::WITHDRAW => new BusinessWithdrawRule()
+            },
+        };
+
+        return $commissionRule->calculate($operation, $operationTracker);
+
+
         echo "Calculating for " . $operation->__toString() . '...' . PHP_EOL;
         $this->operationTracker->addCompletedOperation($operation);
 

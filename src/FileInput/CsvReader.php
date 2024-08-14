@@ -12,7 +12,7 @@ class CsvReader extends FileReader
     protected string $supportedFileExtension = 'csv';
     private string $delimiter;
 
-    public function __construct(string $delimiter = ',')
+    public function __construct(string $delimiter = DEFAULT_CSV_SEPARATOR)
     {
         $this->delimiter = $delimiter;
     }

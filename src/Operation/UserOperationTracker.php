@@ -5,6 +5,7 @@ declare (strict_types=1);
 namespace Justas\CommissionTask\Operation;
 
 use Justas\CommissionTask\CurrencyConversion\CurrencyConverterInterface;
+use Justas\CommissionTask\User\UserType;
 
 class UserOperationTracker
 {    
@@ -24,8 +25,10 @@ class UserOperationTracker
     public function isOperationEligibleForFreeCommission(Operation $operation): bool
     {
         return 
-        ($this->getUserOperationCountThisWeek($operation) <= 3 ) && 
-        ($this->getUserOperationSumThisWeek($operation) <= 1000);
+        $operation->getOperationType() === OperationType::WITHDRAW &&
+        $operation->getUserType() === UserType::PRIVATE &&
+        ($this->getUserOperationCountThisWeek($operation) <= FREE_COMMISSION_PRIVATE_WITHDRAW_OPERATION_COUNT_LIMIT) && 
+        ($this->getUserOperationSumThisWeek($operation) <= FREE_COMMISSION_PRIVATE_USER_WITHDRAW_AMOUNT);
     }
 
     public function getUserOperationCountThisWeek(Operation $operation): int
@@ -33,7 +36,7 @@ class UserOperationTracker
         $operations = $this->userOperationsRepository->
         getOperationsByUserAndWeek(
             $operation->getUserID(), 
-            $operation->getWeekOfOperation()
+            $operation->getPeriodOfOperation()
         );
 
         return count($operations);
@@ -44,7 +47,7 @@ class UserOperationTracker
         $operations = $this->userOperationsRepository->
         getOperationsByUserAndWeek(
             $operation->getUserID(), 
-            $operation->getWeekOfOperation()
+            $operation->getPeriodOfOperation()
         );
         
         $total = 0;

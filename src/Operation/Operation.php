@@ -18,10 +18,10 @@ class Operation
         private string $currency
     ){ }
 
-    public function getWeekOfOperation(): int
+    public function getPeriodOfOperation(): int
     {
         $unixStartTime = strtotime('1970-01-01');
-        $oneWeekInSeconds = 60 * 60 * 24 * 7;
+        $oneWeekInSeconds = 60 * 60 * 24 * FREE_COMMISSION_LIMIT_DAYS;
 
         $date = $this->date;
         $timestamp = strtotime($date->format('Y-m-d'));

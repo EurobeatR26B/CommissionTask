@@ -9,8 +9,8 @@
             "Justas\\CommissionTask\\Operation\\": "src\\Operation",
             "Justas\\CommissionTask\\User\\": "src\\User",
             "Justas\\CommissionTask\\CommissionCalculation\\": "src\\CommissionCalculation",
-            "Justas\\CommissionTask\\CurrencyConversion\\": "src\\CurrencyConversion"
-        }
+            "Justas\\CommissionTask\\CurrencyConversion\\": "src\\CurrencyConversion",
+        },
     },
     "autoload-dev": {
         "psr-4": {
