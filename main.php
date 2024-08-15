@@ -4,13 +4,17 @@ declare (strict_types=1);
 
 namespace Justas\CommissionTask;
 
+use Dotenv\Dotenv;
 use Justas\CommissionTask\CommissionCalculation\CommissionCalculator;
+use Justas\CommissionTask\Operation\Operation;
 use Justas\CommissionTask\Operation\OperationParser;
 use Justas\CommissionTask\Operation\UserOperationTracker;
 
 require ("vendor/autoload.php");
 require ("config.php");
 
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 
 $csv = new FileInput\CsvReader();
 $csv->setFileName("input.csv");
@@ -29,7 +33,9 @@ foreach ($users as $key)
 {
    foreach ($operationRepository->getOperationsByUser($key) as $operation)
    {
-        $commissionCalculator->calculateCommission($operation);
+      // echo $operation->__toString() . PHP_EOL;
+      // continue;
+        echo $commissionCalculator->calculateCommission($operation);
         echo PHP_EOL;
    }
 }

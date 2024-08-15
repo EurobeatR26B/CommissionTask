@@ -17,7 +17,7 @@ class CommissionCalculator
 
     public function calculateCommission(Operation $operation)
     {        
-        $commissionRule = match ($operation->getOperationType())
+        $commissionRule = match ($operation->getUserType())
         {
             UserType::PRIVATE => match ($operation->getOperationType())
             {
@@ -30,6 +30,8 @@ class CommissionCalculator
                 OperationType::WITHDRAW => new BusinessWithdrawRule()
             },
         };
+
+        $this->operationTracker->addCompletedOperation($operation);
 
         return $commissionRule->calculate($operation, $this->operationTracker);
 

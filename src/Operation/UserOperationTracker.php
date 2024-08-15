@@ -5,6 +5,7 @@ declare (strict_types=1);
 namespace Justas\CommissionTask\Operation;
 
 use Justas\CommissionTask\CurrencyConversion\CurrencyConverterInterface;
+use Justas\CommissionTask\CurrencyConversion\ExchangeRateApiClient;
 use Justas\CommissionTask\User\UserType;
 
 class UserOperationTracker
@@ -15,6 +16,7 @@ class UserOperationTracker
     public function __construct()
     {
         $this->userOperationsRepository = new OperationRepository();
+        $this->currencyConverter = new ExchangeRateApiClient();
     }
 
     public function addCompletedOperation(Operation $operation)
@@ -56,17 +58,12 @@ class UserOperationTracker
         {
             if ($operation->getCurrency() !== "EUR")
             {
-                // $amount = $this->currencyConverter->
-                // convertCurrency(
-                //     $operation->getAmount(), 
-                //     $operation->getCurrency(), 
-                //     "EUR");
+                $convertedAmount = $this->currencyConverter->convertCurrency($operation, "EUR");
 
-                $amountAfterConversionToEUR = $operation->getAmount() + 1;
-                $total += $amountAfterConversionToEUR;
+                $total += $convertedAmount;
             }
             else {
-                $total += (int) $operation->getAmount();
+                $total += $operation->getAmount();
             }
         }
 

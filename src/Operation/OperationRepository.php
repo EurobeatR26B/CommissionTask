@@ -10,7 +10,7 @@ class OperationRepository
 
     public function __construct()
     {
-        
+        $this->operationMap = [];
     }
 
     public function addOperation (Operation $operation)

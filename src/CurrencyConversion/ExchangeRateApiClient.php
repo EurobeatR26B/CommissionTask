@@ -2,7 +2,14 @@
 
 declare(strict_types=1);
 
-class CurrencyExchangeApiClient implements CurrencyExchangeApiInterface
+namespace Justas\CommissionTask\CurrencyConversion;
+
+use GuzzleHttp;
+use InvalidArgumentException;
+use Justas\CommissionTask\Operation\Operation;
+use RuntimeException;
+
+class ExchangeRateApiClient implements CurrencyConverterInterface
 {
     private GuzzleHttp\Client $apiClient;
 
@@ -13,18 +20,34 @@ class CurrencyExchangeApiClient implements CurrencyExchangeApiInterface
         ]);
     }
 
+    public function convertCurrency(Operation $operation, string $currencyToConvertTo): float
+    {
+        $exchangeRate = $this->getExchangeRate($operation->getCurrency(), $currencyToConvertTo);
+
+        $convertedAmount = $operation->getAmount() * $exchangeRate;
+
+        return $convertedAmount;
+    }
+
+
+
     public function getExchangeRate(string $startCurrency, string $currencyToConvertTo = 'EUR'): float
     {
-        $request = $this->apiClient->request("GET", $_ENV['EXCHANGE_RATE_API_KEY'] . "/latest/$startCurrency");
-        $response = json_decode($request->getBody()->__toString());
+        // $request = $this->apiClient->request("GET", $_ENV['EXCHANGE_RATE_API_KEY'] . "/latest/$startCurrency");
+        // $response = json_decode($request->getBody()->__toString());
 
-        $responseType = strtolower($response->result);
+        // $responseType = strtolower($response->result);
 
-        if ($responseType === "error") {
-            $this->handleErrors($response->{'error-type'});
-        }
+        // if ($responseType === "error") {
+        //     $this->handleErrors($response->{'error-type'});
+        // }
 
-        $exchangeRate = $response->conversion_rates->$currencyToConvertTo;
+        // $exchangeRate = $response->conversion_rates->$currencyToConvertTo;
+        $exchangeRate = match ($startCurrency)
+        {
+            "USD" => 1.1497,
+            "JPY" => 129.53
+        };
 
         return $exchangeRate;
     }
