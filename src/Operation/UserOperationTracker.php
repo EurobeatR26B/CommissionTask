@@ -28,9 +28,9 @@ class UserOperationTracker
     {
         return 
         $operation->getOperationType() === OperationType::WITHDRAW &&
-        $operation->getUserType() === UserType::PRIVATE &&
+        $operation->getUserType()      === UserType::PRIVATE &&
         ($this->getUserOperationCountThisPeriod($operation) <= FREE_COMMISSION_PRIVATE_WITHDRAW_OPERATION_COUNT_LIMIT) && 
-        ($this->getUserOperationSumThisPeriod($operation) <= FREE_COMMISSION_PRIVATE_USER_WITHDRAW_AMOUNT);
+        ($this->getUserOperationSumThisPeriod($operation)   <= FREE_COMMISSION_PRIVATE_USER_WITHDRAW_AMOUNT);
     }
 
     public function getUserOperationCountThisPeriod(Operation $operation): int
@@ -56,9 +56,9 @@ class UserOperationTracker
         
         foreach ($operations as $operation)
         {
-            if ($operation->getCurrency() !== "EUR")
+            if ($operation->getCurrency() !== FREE_COMMISSION_PRIVATE_USER_WITHDRAW_CURRENCY)
             {
-                $convertedAmount = $this->currencyConverter->convertCurrency($operation, "EUR");
+                $convertedAmount = $this->currencyConverter->convertOperation($operation, FREE_COMMISSION_PRIVATE_USER_WITHDRAW_CURRENCY);
 
                 $total += $convertedAmount;
             }

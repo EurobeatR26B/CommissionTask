@@ -20,7 +20,7 @@ class ExchangeRateApiClient implements CurrencyConverterInterface
         ]);
     }
 
-    public function convertCurrency(Operation $operation, string $currencyToConvertTo): float
+    public function convertOperation(Operation $operation, string $currencyToConvertTo): float
     {
         $exchangeRate = $this->getExchangeRate($operation->getCurrency(), $currencyToConvertTo);
 
@@ -45,8 +45,8 @@ class ExchangeRateApiClient implements CurrencyConverterInterface
         // $exchangeRate = $response->conversion_rates->$currencyToConvertTo;
         $exchangeRate = match ($startCurrency)
         {
-            "USD" => 1.1497,
-            "JPY" => 129.53
+            "USD" => 1 / 1.1497,
+            "JPY" => 1 / 129.53
         };
 
         return $exchangeRate;

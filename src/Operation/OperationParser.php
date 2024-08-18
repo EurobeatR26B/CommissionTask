@@ -54,4 +54,36 @@ class OperationParser
 
         return $operationRepository;
     }
+
+    public function parseSingleLine (object $line): Operation
+    {
+        $date = new DateTime($line->date);
+
+        $userID = (int) $line->userID;
+
+        $userType = match ($line->userType) {
+            'private'  => UserType::PRIVATE,
+            'business' => UserType::BUSINESS
+        };
+
+        $operationType = match ($line->operationType) {
+            'withdraw'  => OperationType::WITHDRAW,
+            'deposit' => OperationType::DEPOSIT
+        };
+
+        $amount = (float) $line->amount;
+
+        $currency = $line->currency;
+
+        $operation = new Operation(
+            $date,
+            $userID,
+            $userType,
+            $operationType,
+            $amount,
+            $currency
+        );
+
+        return $operation;
+    }
 }

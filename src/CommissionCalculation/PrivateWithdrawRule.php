@@ -18,33 +18,61 @@ class PrivateWithdrawRule implements CommissionRuleInterface
 
     public function calculate(Operation $operation): float
     {
-        $taxableOperationAmount = $operation->getAmount();
+        $taxableOperationAmount = $this->getTaxableAmount($operation);
 
-        if ($this->userOperationTracker->isOperationEligibleForFreeCommission($operation))
-        {
-            $taxableOperationAmount = $this->getTaxableAmount($operation);
-        }
-        // else {
-        //     $userOperationsSum = $this->userOperationTracker->getUserOperationSumThisPeriod($operation);
-        //     $taxableOperationAmount = abs($operation->getAmount() - $userOperationsSum);
-        // }
-
-        echo "Calculating commission for " . $operation->__toString() . PHP_EOL;
         $commission = $taxableOperationAmount * COMMISSION_PRIVATE_WITHDRAW;
         $commission = round($commission, COMMISSION_ROUNDING_PRECISION);
 
-        echo '$comission = ' . $taxableOperationAmount . ' * ' . COMMISSION_PRIVATE_WITHDRAW . ' = ' . $commission . PHP_EOL;
-        readline();
+        if (in_array($operation->getCurrency(), CURRENCIES_WITH_NO_DECIMALS))
+        {
+            $commission = ceil($commission);
+        }
+        
+        $this->userOperationTracker->addCompletedOperation($operation);
+
         return $commission;
     }
 
-    private function getTaxableAmount (Operation $operation)
+    private function getTaxableAmount (Operation $operation): float
     {
-        if ($operation->getCurrency() == 'EUR')
-        {
-            $amountExceedingFreeCommissions = $operation->getAmount() - FREE_COMMISSION_PRIVATE_USER_WITHDRAW_AMOUNT;
+        $taxableAmount = $operation->getAmount();
+        $isUserEligibleForFreeCommission = $this->userOperationTracker->isOperationEligibleForFreeCommission($operation);
 
-            return $amountExceedingFreeCommissions >= 0 ? $amountExceedingFreeCommissions : 0;
+        if ($isUserEligibleForFreeCommission)
+        {
+            if ($operation->getCurrency() == FREE_COMMISSION_PRIVATE_USER_WITHDRAW_CURRENCY)
+            {
+                // $taxableAmount = $operation->getAmount() - FREE_COMMISSION_PRIVATE_USER_WITHDRAW_AMOUNT;
+        
+                $remainingTaxCredits = FREE_COMMISSION_PRIVATE_USER_WITHDRAW_AMOUNT - $this->userOperationTracker->getUserOperationSumThisPeriod($operation);
+                $taxableAmount = $operation->getAmount() - $remainingTaxCredits;
+
+                // $taxableAmount = $operation->getAmount() - FREE_COMMISSION_PRIVATE_USER_WITHDRAW_AMOUNT;
+                $taxableAmount = $taxableAmount >= 0 ? $taxableAmount : 0.00;
+            
+            }
+
+            else if ($operation->getCurrency() !== FREE_COMMISSION_PRIVATE_USER_WITHDRAW_CURRENCY)
+            {
+                $operationAmountInMainCurrency = $this->userOperationTracker->currencyConverter->convertOperation(
+                    $operation,
+                    FREE_COMMISSION_PRIVATE_USER_WITHDRAW_CURRENCY
+                );
+
+                if ($operationAmountInMainCurrency > FREE_COMMISSION_PRIVATE_USER_WITHDRAW_AMOUNT)
+                {
+                    $taxableAmountInMainCurrency = $operationAmountInMainCurrency - FREE_COMMISSION_PRIVATE_USER_WITHDRAW_AMOUNT;
+                    $taxableAmountInOperationCurrency = $taxableAmountInMainCurrency * 129.53;
+
+                    $taxableAmount = $taxableAmountInOperationCurrency;
+                }
+                else 
+                {
+                    $taxableAmount = 0.00;
+                }
+            }
         }
+
+        return $taxableAmount;
     }
 }
