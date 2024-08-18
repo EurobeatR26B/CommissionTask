@@ -17,3 +17,5 @@ define ('COMMISSION_ROUNDING_PRECISION', 2);
 define ('CURRENCIES_WITH_NO_DECIMALS',
 ['BIF', 'CLP', 'DJF', 'GNF', 'ISK', 'JPY', 'KMF', 'KRW', 'PYG', 'RWF', 'UGX', 'UYI', 'VND', 'VUV', 'XAF', 'XOF', 'XPF']
 );
+
+define ('SUPPORTED_INPUT_FILE_EXTENSIONS', ['csv']);

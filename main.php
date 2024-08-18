@@ -6,6 +6,7 @@ namespace Justas\CommissionTask;
 
 use Dotenv\Dotenv;
 use Justas\CommissionTask\CommissionCalculation\CommissionCalculator;
+use Justas\CommissionTask\FileInput\ArgumentValidator;
 use Justas\CommissionTask\Operation\Operation;
 use Justas\CommissionTask\Operation\OperationParser;
 use Justas\CommissionTask\Operation\UserOperationTracker;
@@ -16,8 +17,11 @@ require ("config.php");
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
+$argumentValidator = ArgumentValidator::getInstance();
+$argumentValidator->validateLaunchArguments($argv);
+
 $csv = new FileInput\CsvReader();
-$csv->setFileName("input.csv");
+$csv->setFileName($argv[1]);
 
 $operationParser = new OperationParser($csv);
 $operationRepository = $operationParser->parseFile();
