@@ -10,17 +10,14 @@ use DateTime;
 
 class OperationParser
 {
-    private FileReader $fileReader;
 
-    public function __construct(FileReader $fileReader) {
-        $this->fileReader = $fileReader;
-    }
+    public function __construct() { }
 
-    public function parseFile(): OperationRepository
+    public function parseFile(FileReader $fileReader): OperationRepository
     {
         $operationRepository = new OperationRepository();
 
-        foreach ($this->fileReader->getLine() as $line)
+        foreach ($fileReader->getLine() as $line)
         {
             $date = new DateTime($line->date);
 
