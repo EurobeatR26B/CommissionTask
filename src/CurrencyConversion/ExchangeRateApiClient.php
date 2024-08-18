@@ -46,7 +46,12 @@ class ExchangeRateApiClient implements CurrencyConverterInterface
         $exchangeRate = match ($startCurrency)
         {
             "USD" => 1 / 1.1497,
-            "JPY" => 1 / 129.53
+            "JPY" => 1 / 129.53,
+            "EUR" => match ($currencyToConvertTo)
+            {
+                "USD" => 1.1497,
+                "JPY" => 129.53
+            }
         };
 
         return $exchangeRate;

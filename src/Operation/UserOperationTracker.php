@@ -57,9 +57,9 @@ class UserOperationTracker
         foreach ($operations as $operation)
         {
             if ($operation->getCurrency() !== FREE_COMMISSION_PRIVATE_USER_WITHDRAW_CURRENCY)
-            {
+            {                
                 $convertedAmount = $this->currencyConverter->convertOperation($operation, FREE_COMMISSION_PRIVATE_USER_WITHDRAW_CURRENCY);
-
+                
                 $total += $convertedAmount;
             }
             else {

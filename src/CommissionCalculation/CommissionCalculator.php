@@ -21,7 +21,6 @@ class CommissionCalculator
         $commissionRule = $this->getCommissionRule($operation);
 
         $commissionAmount = $commissionRule->calculate($operation, $this->operationTracker);
-        $this->operationTracker->addCompletedOperation($operation);
 
         return $commissionAmount;
     }

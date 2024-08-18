@@ -23,7 +23,7 @@ class OperationRepository
         return $this->operationMap[$userID];
     }
 
-    public function getOperationsByUserAndPeriod(int $userID, int $week): array
+    public function getOperationsByUserAndPeriod(int $userID, int $week, OperationType $operationType = null): array
     {
         if (!isset ($this->operationMap[$userID]))
         {
@@ -38,6 +38,14 @@ class OperationRepository
             {
                 $userOperationsThisWeek [] = $operation;
             }
+        }
+
+        if (isset($operationType))
+        {
+            $userOperationsThisWeek = array_filter ($userOperationsThisWeek, function (Operation $operation) use ($operationType)
+            {
+                return $operation->getOperationType() === $operationType;
+            });
         }
 
         return $userOperationsThisWeek;

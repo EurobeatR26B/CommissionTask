@@ -32,5 +32,5 @@ foreach ($csv->getLine() as $line)
    $operation = $operationParser->parseSingleLine($line);
    $commission = $commissionCalculator->calculateCommission($operation);
 
-   echo "$commission - $operation" . PHP_EOL;
+   echo "Result: $commission - $operation" . PHP_EOL;
 }
