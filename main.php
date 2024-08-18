@@ -27,14 +27,12 @@ $userOperationTracker = new UserOperationTracker();
 $commissionCalculator = new CommissionCalculator($userOperationTracker);
 
 $users = array_keys($operationRepository->getAll());
-sort($users);
+// sort($users);
 
 foreach ($users as $key)
 {
    foreach ($operationRepository->getOperationsByUser($key) as $operation)
    {
-      // echo $operation->__toString() . PHP_EOL;
-      // continue;
         echo $commissionCalculator->calculateCommission($operation);
         echo PHP_EOL;
    }

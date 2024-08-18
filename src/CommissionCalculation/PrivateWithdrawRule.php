@@ -18,17 +18,33 @@ class PrivateWithdrawRule implements CommissionRuleInterface
 
     public function calculate(Operation $operation): float
     {
+        $taxableOperationAmount = $operation->getAmount();
+
         if ($this->userOperationTracker->isOperationEligibleForFreeCommission($operation))
         {
-            return 0.00;
+            $taxableOperationAmount = $this->getTaxableAmount($operation);
         }
+        // else {
+        //     $userOperationsSum = $this->userOperationTracker->getUserOperationSumThisPeriod($operation);
+        //     $taxableOperationAmount = abs($operation->getAmount() - $userOperationsSum);
+        // }
 
-        $userOperationsSum = $this->userOperationTracker->getUserOperationSumThisPeriod($operation);
-        $taxableOperationAmount = abs($operation->getAmount() - $userOperationsSum);
-
+        echo "Calculating commission for " . $operation->__toString() . PHP_EOL;
         $commission = $taxableOperationAmount * COMMISSION_PRIVATE_WITHDRAW;
         $commission = round($commission, COMMISSION_ROUNDING_PRECISION);
 
+        echo '$comission = ' . $taxableOperationAmount . ' * ' . COMMISSION_PRIVATE_WITHDRAW . ' = ' . $commission . PHP_EOL;
+        readline();
         return $commission;
+    }
+
+    private function getTaxableAmount (Operation $operation)
+    {
+        if ($operation->getCurrency() == 'EUR')
+        {
+            $amountExceedingFreeCommissions = $operation->getAmount() - FREE_COMMISSION_PRIVATE_USER_WITHDRAW_AMOUNT;
+
+            return $amountExceedingFreeCommissions >= 0 ? $amountExceedingFreeCommissions : 0;
+        }
     }
 }
