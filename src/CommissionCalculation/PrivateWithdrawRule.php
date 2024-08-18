@@ -33,7 +33,7 @@ class PrivateWithdrawRule implements CommissionRuleInterface
         return $commission;
     }
 
-    private function getTaxableAmount (Operation $operation): float
+    public function getTaxableAmount (Operation $operation): float
     {
         $taxableAmount = $operation->getAmount();
         

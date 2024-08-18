@@ -10,4 +10,5 @@ use Justas\CommissionTask\Operation\UserOperationTracker;
 interface CommissionRuleInterface
 {
     public function calculate(Operation $operation): float;
+    public function getTaxableAmount(Operation $operation): float;
 }

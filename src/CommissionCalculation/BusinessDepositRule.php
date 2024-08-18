@@ -17,9 +17,16 @@ class BusinessDepositRule implements CommissionRuleInterface
     public function calculate(Operation $operation): float
     {
         $commissionRate = COMMISSION_BUSINESS_DEPOSIT;
-        $commissionAmount = $operation->getAmount() * $commissionRate;
+        $taxableAmount = $this->getTaxableAmount($operation);
+
+        $commissionAmount = $taxableAmount * $commissionRate;
         $commissionAmount = round($commissionAmount, COMMISSION_ROUNDING_PRECISION);
 
         return $commissionAmount;
+    }
+
+    public function getTaxableAmount (Operation $operation): float
+    {
+        return $operation->getAmount();
     }
 }

@@ -20,17 +20,12 @@ $dotenv->load();
 $argumentValidator = ArgumentValidator::getInstance();
 $argumentValidator->validateLaunchArguments($argv);
 
-$csvReader = new FileInput\CsvReader();
-$csvReader->setFileName($argv[1]);
+$csvReader = (new FileInput\CsvReader())->setFileName($argv[1]);
 
 $operationParser = new OperationParser();
-$operationRepository = $operationParser->parseFile($csvReader);
-
-
 $userOperationTracker = new UserOperationTracker();
 $commissionCalculator = new CommissionCalculator($userOperationTracker);
 
-$users = array_keys($operationRepository->getAll());
 foreach ($csvReader->getLine() as $line)
 {
    $operation = $operationParser->parseSingleLine($line);
