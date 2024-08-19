@@ -32,7 +32,7 @@
         "bin-dir": "bin"
     },
     "scripts": {
-        "phpunit": "phpunit",
+        "phpunit": "bin/phpunit tests --colors --testdox",
         "fix-cs": "php-cs-fixer fix",
         "test-cs": "php-cs-fixer fix --dry-run -v",
         "test": ["@phpunit", "@test-cs"]

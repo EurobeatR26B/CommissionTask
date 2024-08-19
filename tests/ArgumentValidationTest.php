@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
+require('config.php');
+
 use PHPUnit\Framework\TestCase;
 use Psalm\Issue\InvalidArgument;
 use Justas\CommissionTask\FileInput\ArgumentValidator;
 use Justas\CommissionTask\FileInput\CsvReader;
 
-final class ArgumentValidatorTest extends TestCase
+final class ArgumentValidationTest extends TestCase
 {
     public function testDetectsEmptyArguments()
     {
@@ -56,7 +58,7 @@ final class ArgumentValidatorTest extends TestCase
 
     public function testAcceptsSupportedFileFormat()
     {
-        $args = ["script.php", "input.txt"];
+        $args = ["script.php", "input.csv"];
 
         ArgumentValidator::getInstance()->validateLaunchArguments($args);
         $reader = new CsvReader($args[1]);

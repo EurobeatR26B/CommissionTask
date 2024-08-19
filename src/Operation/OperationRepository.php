@@ -34,7 +34,7 @@ class OperationRepository
 
         foreach ($this->operationMap[$userID] as $operation)
         {
-            if ($operation->getPeriodOfOperation() === $week)
+            if ($operation->getPeriodOfOperation() == $week)
             {
                 $userOperationsThisWeek [] = $operation;
             }

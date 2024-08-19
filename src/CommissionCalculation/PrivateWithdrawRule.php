@@ -40,8 +40,24 @@ class PrivateWithdrawRule implements CommissionRuleInterface
         $userOperationSum = $this->userOperationTracker->getUserOperationSumThisPeriod($operation);
         $remainingTaxCredits = FREE_COMMISSION_PRIVATE_USER_WITHDRAW_AMOUNT - $userOperationSum;
 
+        $userOperationCount = $this->userOperationTracker->getUserOperationCountThisPeriod($operation) + 1;
+
         if ($operation->getCurrency() === FREE_COMMISSION_PRIVATE_USER_WITHDRAW_CURRENCY)
         {
+            if ($userOperationCount > FREE_COMMISSION_PRIVATE_WITHDRAW_OPERATION_COUNT_LIMIT)
+            {
+                return $operation->getAmount();                
+            }
+            else 
+            {
+                $totalAmountDoneByUser = $userOperationSum + $operation->getAmount();
+
+                if ($totalAmountDoneByUser <= FREE_COMMISSION_PRIVATE_USER_WITHDRAW_AMOUNT)
+                {
+                    return 0.00;
+                }                
+            }
+
             if ($remainingTaxCredits <= 0)
             {
                 $taxableAmount = $operation->getAmount();
@@ -60,6 +76,21 @@ class PrivateWithdrawRule implements CommissionRuleInterface
             $exchangeRate = $this->userOperationTracker->currencyConverter->getExchangeRate($operation->getCurrency(), FREE_COMMISSION_PRIVATE_USER_WITHDRAW_CURRENCY);
 
             $operationInMainCurrency = $operation->getAmount() * $exchangeRate;
+
+            if ($userOperationCount <= FREE_COMMISSION_PRIVATE_WITHDRAW_OPERATION_COUNT_LIMIT)
+            {
+                $totalAmountDoneByUser = $userOperationSum + $operationInMainCurrency;
+
+                if ($totalAmountDoneByUser <= FREE_COMMISSION_PRIVATE_USER_WITHDRAW_AMOUNT)
+                {
+                    return 0.00;
+                }
+            }
+            else 
+            {
+                return $operation->getAmount();
+            }
+
             if ($operationInMainCurrency > $remainingTaxCredits)
             {
                 if ($remainingTaxCredits <= 0)
