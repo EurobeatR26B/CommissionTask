@@ -20,7 +20,6 @@ class BusinessWithdrawRule implements CommissionRuleInterface
         $taxableAmount = $this->getTaxableAmount($operation);
         
         $commissionAmount = $taxableAmount * $commissionRate;
-        $commissionAmount = round($commissionAmount, COMMISSION_ROUNDING_PRECISION);
 
         return $commissionAmount;
     }

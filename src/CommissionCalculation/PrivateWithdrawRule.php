@@ -21,12 +21,6 @@ class PrivateWithdrawRule implements CommissionRuleInterface
         $taxableOperationAmount = $this->getTaxableAmount($operation);
 
         $commission = $taxableOperationAmount * COMMISSION_PRIVATE_WITHDRAW;
-        $commission = round($commission, COMMISSION_ROUNDING_PRECISION);
-
-        if (in_array($operation->getCurrency(), CURRENCIES_WITH_NO_DECIMALS))
-        {
-            $commission = ceil($commission);
-        }
         
         $this->userOperationTracker->addCompletedOperation($operation);
 

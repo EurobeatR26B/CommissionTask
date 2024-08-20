@@ -19,8 +19,9 @@ class CommissionCalculator
     public function calculateCommission(Operation $operation)
     {        
         $commissionRule = $this->getCommissionRule($operation);
-
         $commissionAmount = $commissionRule->calculate($operation, $this->operationTracker);
+        
+        $commissionAmount = $this->roundCommission($operation->getCurrency(), $commissionAmount);
 
         return $commissionAmount;
     }
@@ -42,5 +43,21 @@ class CommissionCalculator
         };
 
         return $commissionRule;
+    }
+
+    private function roundCommission(string $currency, float $amount)
+    {
+        if (in_array($currency, CURRENCIES_WITH_NO_DECIMALS))
+        {
+            return ceil($amount);
+        }
+
+        if ($amount < 0.10)
+        {
+            return $amount;
+        }
+        
+        $rounded = round($amount, COMMISSION_ROUNDING_PRECISION);
+        return $rounded;
     }
 }
