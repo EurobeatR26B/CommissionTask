@@ -10,7 +10,6 @@ use DateTime;
 
 class OperationParser
 {
-
     public function __construct() { }
 
     public function parseFile(FileReader $fileReader): OperationRepository
