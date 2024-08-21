@@ -7,12 +7,13 @@ namespace Justas\CommissionTask\Operation;
 use Justas\CommissionTask\FileInput\FileReader;
 use Justas\CommissionTask\User\UserType;
 use DateTime;
+use Generator;
 
 class OperationParser
 {
     public function __construct() { }
 
-    public function parseFile(FileReader $fileReader): OperationRepository
+    public function parseFile(FileReader $fileReader): Generator
     {
         $operationRepository = new OperationRepository();
 
@@ -45,10 +46,8 @@ class OperationParser
                 $currency
             );
 
-            $operationRepository->addOperation($operation);
+            yield $operation;
         }
-
-        return $operationRepository;
     }
 
     public function parseSingleLine (object $line): Operation

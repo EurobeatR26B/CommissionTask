@@ -29,9 +29,8 @@ $exchangeRateApi = new ExchangeRateApiClient(useTestRates: true);
 $userOperationTracker = new UserOperationTracker($exchangeRateApi);
 $commissionCalculator = new CommissionCalculator($userOperationTracker);
 
-foreach ($csvReader->getLine() as $line)
+foreach ($operationParser->parseFile($csvReader) as $operation)
 {
-   $operation = $operationParser->parseSingleLine($line);
    $commission = $commissionCalculator->calculateCommission($operation);
 
    echo $commission . PHP_EOL;
