@@ -12,12 +12,15 @@ use RuntimeException;
 class ExchangeRateApiClient implements CurrencyConverterInterface
 {
     private GuzzleHttp\Client $apiClient;
+    private bool $useTestRates;
 
-    public function __construct()
+    public function __construct(bool $useTestRates = true)
     {
         $this->apiClient = new GuzzleHttp\Client([
             'base_uri' => $_ENV['EXCHANGE_RATE_API_URL'],
         ]);
+
+        $this->useTestRates = $useTestRates;
     }
 
     public function convertOperation(Operation $operation, string $currencyToConvertTo): float
@@ -33,26 +36,30 @@ class ExchangeRateApiClient implements CurrencyConverterInterface
 
     public function getExchangeRate(string $startCurrency, string $currencyToConvertTo = 'EUR'): float
     {
-        // $request = $this->apiClient->request("GET", $_ENV['EXCHANGE_RATE_API_KEY'] . "/latest/$startCurrency");
-        // $response = json_decode($request->getBody()->__toString());
+        if ($this->useTestRates) {
+            $exchangeRate = match ($startCurrency) {
+                "USD" => 1 / 1.1497,
+                "JPY" => 1 / 129.53,
+                "EUR" => match ($currencyToConvertTo) {
+                    "USD" => 1.1497,
+                    "JPY" => 129.53
+                }
+            };
 
-        // $responseType = strtolower($response->result);
+            return $exchangeRate;
+        }
 
-        // if ($responseType === "error") {
-        //     $this->handleErrors($response->{'error-type'});
-        // }
+        $request = $this->apiClient->request("GET", $_ENV['EXCHANGE_RATE_API_KEY'] . "/latest/$startCurrency");
+        $response = json_decode($request->getBody()->__toString());
 
-        // $exchangeRate = $response->conversion_rates->$currencyToConvertTo;
-        $exchangeRate = match ($startCurrency)
-        {
-            "USD" => 1 / 1.1497,
-            "JPY" => 1 / 129.53,
-            "EUR" => match ($currencyToConvertTo)
-            {
-                "USD" => 1.1497,
-                "JPY" => 129.53
-            }
-        };
+        $responseType = strtolower($response->result);
+
+        if ($responseType === "error") {
+            $this->handleErrors($response->{'error-type'});
+        }
+
+        $exchangeRate = $response->conversion_rates->$currencyToConvertTo;
+
 
         return $exchangeRate;
     }

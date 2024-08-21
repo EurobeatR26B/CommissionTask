@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Justas\CommissionTask\CommissionCalculation;
 
+use Justas\CommissionTask\CurrencyConversion\CurrencyConverterInterface;
 use Justas\CommissionTask\Operation\Operation;
 use Justas\CommissionTask\Operation\OperationType;
 use Justas\CommissionTask\Operation\UserOperationTracker;
@@ -13,7 +14,7 @@ use PHPUnit\Framework\Constraint\Operator;
 class CommissionCalculator
 {
     public function __construct(
-        private UserOperationTracker $operationTracker
+        private UserOperationTracker $operationTracker,
     ){}
 
     public function calculateCommission(Operation $operation)

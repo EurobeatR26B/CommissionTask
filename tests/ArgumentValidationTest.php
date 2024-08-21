@@ -36,7 +36,7 @@ final class ArgumentValidationTest extends TestCase
         $args = ["script.php", "ghostfile.txt"];
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("The input file could not be found in the project directory.");
+        $this->expectExceptionMessage("The input file 'ghostfile.txt' could not be found in the project directory.");
 
         ArgumentValidator::getInstance()->validateLaunchArguments($args);
     }

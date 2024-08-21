@@ -24,17 +24,21 @@ final class ArgumentValidator
         return self::$argumentValidator;
     }
 
-    public function validateLaunchArguments($args): void
-    {
-        if (!isset($args[1])) {
+    public function validateLaunchArguments(array $args): void
+    {   
+        $inputFile = $args[1];
+
+        if (!isset($inputFile) || $inputFile == '') {
             throw new InvalidArgumentException("No input file has been provided.");
         }
 
-        if (!file_exists($args[1])) {
-            throw new InvalidArgumentException("The input file could not be found in the project directory.");
+        if (!file_exists($inputFile)) {
+            throw new InvalidArgumentException("The input file '$inputFile' could not be found in the project directory.");
         }
 
-        if (!in_array(pathinfo($args[1], PATHINFO_EXTENSION), SUPPORTED_INPUT_FILE_EXTENSIONS)) {
+        $inputFileExtension = pathinfo($inputFile, PATHINFO_EXTENSION);
+
+        if (!in_array($inputFileExtension, SUPPORTED_INPUT_FILE_EXTENSIONS)) {
             $errorMessage = "Unsupported file format. Please use one of the following: " .
             implode(', ', SUPPORTED_INPUT_FILE_EXTENSIONS);
 

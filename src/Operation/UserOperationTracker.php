@@ -13,10 +13,10 @@ class UserOperationTracker
     public CurrencyConverterInterface $currencyConverter;
     private OperationRepository $userOperationsRepository;
 
-    public function __construct()
+    public function __construct(CurrencyConverterInterface $currencyConverter = new ExchangeRateApiClient())
     {
         $this->userOperationsRepository = new OperationRepository();
-        $this->currencyConverter = new ExchangeRateApiClient();
+        $this->currencyConverter = $currencyConverter;
     }
 
     public function addCompletedOperation(Operation $operation)

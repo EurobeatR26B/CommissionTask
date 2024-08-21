@@ -6,6 +6,7 @@ namespace Justas\CommissionTask;
 
 use Dotenv\Dotenv;
 use Justas\CommissionTask\CommissionCalculation\CommissionCalculator;
+use Justas\CommissionTask\CurrencyConversion\ExchangeRateApiClient;
 use Justas\CommissionTask\FileInput\ArgumentValidator;
 use Justas\CommissionTask\Operation\Operation;
 use Justas\CommissionTask\Operation\OperationParser;
@@ -23,7 +24,9 @@ $argumentValidator->validateLaunchArguments($argv);
 $csvReader = (new FileInput\CsvReader())->setFileName($argv[1]);
 
 $operationParser = new OperationParser();
-$userOperationTracker = new UserOperationTracker();
+
+$exchangeRateApi = new ExchangeRateApiClient(useTestRates: true);
+$userOperationTracker = new UserOperationTracker($exchangeRateApi);
 $commissionCalculator = new CommissionCalculator($userOperationTracker);
 
 foreach ($csvReader->getLine() as $line)
@@ -31,5 +34,5 @@ foreach ($csvReader->getLine() as $line)
    $operation = $operationParser->parseSingleLine($line);
    $commission = $commissionCalculator->calculateCommission($operation);
 
-   echo "Result: $commission - $operation" . PHP_EOL;
+   echo $commission . PHP_EOL;
 }

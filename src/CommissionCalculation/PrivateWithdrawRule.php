@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Justas\CommissionTask\CommissionCalculation;
 
+use Justas\CommissionTask\CurrencyConversion\CurrencyConverterInterface;
 use Justas\CommissionTask\Operation\Operation;
 use Justas\CommissionTask\Operation\UserOperationTracker;
 
