@@ -8,6 +8,7 @@ use Dotenv\Dotenv;
 use Justas\CommissionTask\CommissionCalculation\CommissionCalculator;
 use Justas\CommissionTask\CurrencyConversion\ExchangeRateApiClient;
 use Justas\CommissionTask\FileInput\ArgumentValidator;
+use Justas\CommissionTask\FileInput\CsvReader;
 use Justas\CommissionTask\Operation\Operation;
 use Justas\CommissionTask\Operation\OperationParser;
 use Justas\CommissionTask\Operation\UserOperationTracker;
@@ -21,7 +22,7 @@ $dotenv->load();
 $argumentValidator = ArgumentValidator::getInstance();
 $argumentValidator->validateLaunchArguments($argv);
 
-$csvReader = (new FileInput\CsvReader())->setFileName($argv[1]);
+$csvReader = (new CsvReader())->setFileName($argv[1]);
 
 $operationParser = new OperationParser();
 

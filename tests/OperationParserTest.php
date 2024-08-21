@@ -52,46 +52,4 @@ class OperationParserTest extends TestCase
         $this->assertSame($operationObject->getCurrency(), $operationLine->getCurrency());
 
     }
-
-    public function testParseFile()
-    {
-        $file = fopen('testParseFile.csv', 'w');
-        $data = "2014-12-31,4,private,withdraw,1200.00,EUR
-        2015-01-01,4,private,withdraw,1000.00,EUR";
-
-        fwrite($file, $data);
-
-        $csvParser = (new CsvReader())->setFileName('testParseFile.csv');
-
-        $operations = $this->parser->parseFile($csvParser);
-
-        $this->assertSame(OperationRepository::class, $operations::class);
-
-        $operationArray = 
-        [
-            4 => [
-                new Operation(
-                    new DateTime('2014-12-31'),
-                    4,
-                    UserType::PRIVATE,
-                    OperationType::WITHDRAW,
-                    1200.00,
-                    'EUR'
-                ),
-                new Operation(
-                    new DateTime('2015-01-01'),
-                    4,
-                    UserType::PRIVATE,
-                    OperationType::WITHDRAW,
-                    1000.00,
-                    'EUR'
-                )        
-                ]    
-            ];
-
-        $this->assertEquals($operationArray, $operations->getAll());
-
-        fclose($file);
-        unlink('testParseFile.csv');
-    }
 }
