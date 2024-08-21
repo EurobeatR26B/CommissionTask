@@ -1,11 +1,21 @@
-# Paysera Commission task skeleton
+## Hello, thank you for visiting another one of my programs :) 
 
-Following steps:
-- don't forget to change `Paysera` namespace and package name in `composer.json`
- to your own, as `Paysera` keyword should not be used anywhere in your task;
-- `\Paysera\CommissionTask\Service\Math` is an example class provided for the skeleton and could or could not be used by your preference;
-- needed scripts could be found inside `composer.json`;
-- before submitting the task make sure that all the scripts pass (`composer run test` in particular);
-- this file should be updated before submitting the task with the documentation on how to run your program.
+```
+                 _                                                            _
+               _(_)_                          wWWWw   _                     _(_)_                          wWWWw   _ 
+   @@@@       (_)@(_)   vVVVv     _     @@@@  (___) _(_)_       @@@@       (_)@(_)   vVVVv     _     @@@@  (___) _(_)_
+  @@()@@ wWWWw  (_)\    (___)   _(_)_  @@()@@   Y  (_)@(_)     @@()@@ wWWWw  (_)\    (___)   _(_)_  @@()@@   Y  (_)@(_)
+   @@@@  (___)     `|/    Y    (_)@(_)  @@@@   \|/   (_)\       @@@@  (___)     `|/    Y    (_)@(_)  @@@@   \|/   (_)\
+    /      Y       \|    \|/    /(_)    \|      |/      |        /      Y       \|    \|/    /(_)    \|      |/      |
+ \ |     \ |/       | / \ | /  \|/       |/    \|      \|/    \ |     \ |/       | / \ | /  \|/       |/    \|      \|/
+  |//   \\|///  \\\|//\\\|/// \|///  \\\|//  \\|//  \\\|//  jgs|//   \\|///  \\\|//\\\|/// \|///  \\\|//  \\|//  \\\|//
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+```
 
-Good luck! :) 
+### Commission Calculation
+### Usage instructions:
+0. the required PHP version is at least `8.0`, as some PHP 8 features such as `match` and construction promotion have been used;
+1. Exchange Rate look-up API was changed to [exchangerate-api.com](https://www.exchangerate-api.com/), as [exchangeratesapi.io](https://exchangeratesapi.io/) requires credit card information even for the free plan;
+2. start off by installing the dependencies - run `composer install`;
+3. the program can be run by running `php main.php input.csv`. If you would like to use a different input file, replace `input.csv` with the name of your file, e.g. `php main.php myfile.csv`;
+2. all the tests (including the one to compare the results with the ones provided in the task) can be executed by running `bin/phpunit tests` or, preferably, `composer run-script run-tests`;
