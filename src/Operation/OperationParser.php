@@ -11,14 +11,15 @@ use Generator;
 
 class OperationParser
 {
-    public function __construct() { }
+    public function __construct()
+    {
+    }
 
     public function parseFile(FileReader $fileReader): Generator
     {
         $operationRepository = new OperationRepository();
 
-        foreach ($fileReader->getLine() as $line)
-        {
+        foreach ($fileReader->getLine() as $line) {
             $date = new DateTime($line->date);
 
             $userID = (int) $line->userID;
@@ -50,7 +51,7 @@ class OperationParser
         }
     }
 
-    public function parseSingleLine (object $line): Operation
+    public function parseSingleLine(object $line): Operation
     {
         $date = new DateTime($line->date);
 

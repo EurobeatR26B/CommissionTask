@@ -25,7 +25,7 @@ final class ArgumentValidator
     }
 
     public function validateLaunchArguments(array $args): void
-    {   
+    {
         $inputFile = $args[1];
 
         if (!isset($inputFile) || $inputFile == '') {

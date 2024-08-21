@@ -24,15 +24,14 @@ class MainTest extends TestCase
             $operation = $operationParser->parseSingleLine($line);
             $commission = $commissionCalculator->calculateCommission($operation);
 
-            if (!in_array($operation->getCurrency(), CURRENCIES_WITH_NO_DECIMALS))
-            {
+            if (!in_array($operation->getCurrency(), CURRENCIES_WITH_NO_DECIMALS)) {
                 $commission = number_format($commission, 2);
             }
 
-           $resultLine .= $commission . PHP_EOL;
+            $resultLine .= $commission . PHP_EOL;
         }
 
-        $expectedResultLine = 
+        $expectedResultLine =
         "0.60
         3.00
         0.00

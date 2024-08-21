@@ -94,7 +94,7 @@ class UserOperationTrackerTest extends TestCase
         $count = $this->tracker->getUserOperationCountThisPeriod($operation);
         $count2 = $this->tracker->getUserOperationCountThisPeriod($operation2);
         $count3 = $this->tracker->getUserOperationCountThisPeriod($operation3);
-        
+
         $this->assertSame(1, $count);
         $this->assertSame(1, $count);
         $this->assertSame(1, $count);
@@ -157,7 +157,7 @@ class UserOperationTrackerTest extends TestCase
         $count = $this->tracker->getUserOperationSumThisPeriod($operation);
         $count2 = $this->tracker->getUserOperationSumThisPeriod($operation2);
         $count3 = $this->tracker->getUserOperationSumThisPeriod($operation3);
-        
+
         $this->assertSame(1.00, $count);
         $this->assertSame(1.01, $count2);
         $this->assertSame(1.00, $count3);
@@ -218,7 +218,7 @@ class UserOperationTrackerTest extends TestCase
         $this->assertTrue($eligible);
 
         $this->tracker->addCompletedOperation($operation);
-        
+
         $eligible = $this->tracker->isOperationEligibleForFreeCommission($operation);
         $this->assertFalse($eligible);
     }

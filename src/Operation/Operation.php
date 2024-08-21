@@ -7,7 +7,7 @@ namespace Justas\CommissionTask\Operation;
 use DateTime;
 use Justas\CommissionTask\User\UserType;
 
-class Operation 
+class Operation
 {
     public function __construct(
         private DateTime $date,
@@ -16,7 +16,8 @@ class Operation
         private OperationType $operationType,
         private float $amount,
         private string $currency
-    ){ }
+    ) {
+    }
 
     public function getPeriodOfOperation(): int
     {
@@ -25,7 +26,7 @@ class Operation
 
         $date = $this->date;
         $timestamp = strtotime($date->format('Y-m-d'));
-        
+
         $periodNumber = ($timestamp - $unixStartTime) / $onePeriodInSeconds;
         $periodNumber = (int) round($periodNumber);
 

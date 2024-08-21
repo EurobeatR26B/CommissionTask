@@ -20,14 +20,12 @@ class CsvReader extends FileReader
     public function getLine(): Generator
     {
         $file = $this->validateFileCanBeOpened();
-        if (!$file)
-        {
+        if (!$file) {
             $message = "The input file could not be opened";
             throw new InvalidArgumentException($message);
         }
 
-        while (!feof($file))
-        {
+        while (!feof($file)) {
             $line = fgets($file);
             $line = trim($line);
 

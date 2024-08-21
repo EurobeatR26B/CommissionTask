@@ -16,7 +16,7 @@ class OperationParserTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->parser = new OperationParser();    
+        $this->parser = new OperationParser();
     }
 
     public function testParseLine()

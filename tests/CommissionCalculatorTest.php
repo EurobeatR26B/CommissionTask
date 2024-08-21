@@ -21,7 +21,7 @@ final class CommissionCalculatorTest extends TestCase
 
     public function testSinglePrivateDepositCorrectly()
     {
-        $operation = new Operation (
+        $operation = new Operation(
             new DateTime('2024-08-19'),
             1,
             UserType::PRIVATE,
@@ -30,7 +30,7 @@ final class CommissionCalculatorTest extends TestCase
             'EUR'
         );
 
-        $operationUSD = new Operation (
+        $operationUSD = new Operation(
             new DateTime('2024-08-19'),
             1,
             UserType::PRIVATE,
@@ -48,7 +48,7 @@ final class CommissionCalculatorTest extends TestCase
 
     public function testSinglePrivateWithdrawFreeAmount()
     {
-        $operation = new Operation (
+        $operation = new Operation(
             new DateTime('2024-08-19'),
             1,
             UserType::PRIVATE,
@@ -57,7 +57,7 @@ final class CommissionCalculatorTest extends TestCase
             'EUR'
         );
 
-        $operationUSD = new Operation (
+        $operationUSD = new Operation(
             new DateTime('2024-08-19'),
             1,
             UserType::PRIVATE,
@@ -66,7 +66,7 @@ final class CommissionCalculatorTest extends TestCase
             'USD'
         );
 
-        $operationJPY = new Operation (
+        $operationJPY = new Operation(
             new DateTime('2024-08-19'),
             1,
             UserType::PRIVATE,
@@ -115,9 +115,9 @@ final class CommissionCalculatorTest extends TestCase
         $this->assertSame(0.5, $commission);
     }
 
-    public function testPrivateWithdrawOverFreeAmount ()
+    public function testPrivateWithdrawOverFreeAmount()
     {
-        $operation = new Operation (
+        $operation = new Operation(
             new DateTime('2024-08-19'),
             1,
             UserType::PRIVATE,
@@ -133,7 +133,7 @@ final class CommissionCalculatorTest extends TestCase
 
     public function testPrivateWithdrawOverFreeCount()
     {
-        $operation = new Operation (
+        $operation = new Operation(
             new DateTime('2024-08-19'),
             1,
             UserType::PRIVATE,
@@ -155,7 +155,7 @@ final class CommissionCalculatorTest extends TestCase
 
     public function testPrivateWithdrawUnderFreeCount()
     {
-        $operation = new Operation (
+        $operation = new Operation(
             new DateTime('2024-08-19'),
             1,
             UserType::PRIVATE,
@@ -171,11 +171,11 @@ final class CommissionCalculatorTest extends TestCase
         $this->assertSame(0.00, $commission1);
         $this->assertSame(0.00, $commission2);
         $this->assertSame(0.00, $commission3);
-    }    
+    }
 
     public function testPrivateWithdrawOtherCurrencyUsd()
     {
-        $operation = new Operation (
+        $operation = new Operation(
             new DateTime('2024-08-19'),
             1,
             UserType::PRIVATE,
@@ -191,7 +191,7 @@ final class CommissionCalculatorTest extends TestCase
 
     public function testPrivateWithdrawOtherCurrencyJpySingleOverFree()
     {
-        $operation = new Operation (
+        $operation = new Operation(
             new DateTime('2024-08-19'),
             1,
             UserType::PRIVATE,
@@ -207,7 +207,7 @@ final class CommissionCalculatorTest extends TestCase
 
     public function testPrivateWithdrawOtherCurrencyJpyFree()
     {
-        $operation = new Operation (
+        $operation = new Operation(
             new DateTime('2024-08-19'),
             1,
             UserType::PRIVATE,
@@ -223,7 +223,7 @@ final class CommissionCalculatorTest extends TestCase
 
     public function testPrivateWithdrawOtherCurrencyJpyFull()
     {
-        $operation = new Operation (
+        $operation = new Operation(
             new DateTime('2024-08-19'),
             1,
             UserType::PRIVATE,
@@ -232,7 +232,7 @@ final class CommissionCalculatorTest extends TestCase
             'JPY'
         );
 
-        $operation2 = new Operation (
+        $operation2 = new Operation(
             new DateTime('2024-08-19'),
             1,
             UserType::PRIVATE,
@@ -250,7 +250,7 @@ final class CommissionCalculatorTest extends TestCase
 
     public function testCalculatePrivateWithdrawMixed()
     {
-        $operation = new Operation (
+        $operation = new Operation(
             new DateTime('2024-08-19'),
             1,
             UserType::PRIVATE,
@@ -259,7 +259,7 @@ final class CommissionCalculatorTest extends TestCase
             'EUR'
         );
 
-        $operation2 = new Operation (
+        $operation2 = new Operation(
             new DateTime('2024-08-19'),
             1,
             UserType::PRIVATE,
@@ -268,7 +268,7 @@ final class CommissionCalculatorTest extends TestCase
             'EUR'
         );
 
-        $operation3 = new Operation (
+        $operation3 = new Operation(
             new DateTime('2024-08-19'),
             1,
             UserType::PRIVATE,
@@ -277,7 +277,7 @@ final class CommissionCalculatorTest extends TestCase
             'EUR'
         );
 
-        $operation4 = new Operation (
+        $operation4 = new Operation(
             new DateTime('2024-08-19'),
             1,
             UserType::PRIVATE,
@@ -286,7 +286,7 @@ final class CommissionCalculatorTest extends TestCase
             'EUR'
         );
 
-        $operation5 = new Operation (
+        $operation5 = new Operation(
             new DateTime('2024-08-19'),
             1,
             UserType::PRIVATE,
@@ -295,7 +295,7 @@ final class CommissionCalculatorTest extends TestCase
             'JPY'
         );
 
-        $operation6 = new Operation (
+        $operation6 = new Operation(
             new DateTime('2024-08-19'),
             1,
             UserType::PRIVATE,
@@ -304,7 +304,7 @@ final class CommissionCalculatorTest extends TestCase
             'USD'
         );
 
-        $operation7 = new Operation (
+        $operation7 = new Operation(
             new DateTime('2024-08-30'),
             1,
             UserType::PRIVATE,

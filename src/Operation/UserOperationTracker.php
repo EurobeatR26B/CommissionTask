@@ -9,7 +9,7 @@ use Justas\CommissionTask\CurrencyConversion\ExchangeRateApiClient;
 use Justas\CommissionTask\User\UserType;
 
 class UserOperationTracker
-{    
+{
     public CurrencyConverterInterface $currencyConverter;
     private OperationRepository $userOperationsRepository;
 
@@ -26,10 +26,10 @@ class UserOperationTracker
 
     public function isOperationEligibleForFreeCommission(Operation $operation): bool
     {
-        return 
+        return
         $operation->getOperationType() === OperationType::WITHDRAW &&
         $operation->getUserType()      === UserType::PRIVATE &&
-        ($this->getUserOperationCountThisPeriod($operation) <= FREE_COMMISSION_PRIVATE_WITHDRAW_OPERATION_COUNT_LIMIT) && 
+        ($this->getUserOperationCountThisPeriod($operation) <= FREE_COMMISSION_PRIVATE_WITHDRAW_OPERATION_COUNT_LIMIT) &&
         ($this->getUserOperationSumThisPeriod($operation)   <= FREE_COMMISSION_PRIVATE_USER_WITHDRAW_AMOUNT);
     }
 
@@ -37,7 +37,7 @@ class UserOperationTracker
     {
         $operations = $this->userOperationsRepository->
         getOperationsByUserAndPeriod(
-            $operation->getUserID(), 
+            $operation->getUserID(),
             $operation->getPeriodOfOperation()
         );
 
@@ -48,21 +48,18 @@ class UserOperationTracker
     {
         $operations = $this->userOperationsRepository->
         getOperationsByUserAndPeriod(
-            $operation->getUserID(), 
+            $operation->getUserID(),
             $operation->getPeriodOfOperation()
         );
-        
+
         $total = 0;
-        
-        foreach ($operations as $operation)
-        {
-            if ($operation->getCurrency() !== FREE_COMMISSION_PRIVATE_USER_WITHDRAW_CURRENCY)
-            {                
+
+        foreach ($operations as $operation) {
+            if ($operation->getCurrency() !== FREE_COMMISSION_PRIVATE_USER_WITHDRAW_CURRENCY) {
                 $convertedAmount = $this->currencyConverter->convertOperation($operation, FREE_COMMISSION_PRIVATE_USER_WITHDRAW_CURRENCY);
-                
+
                 $total += $convertedAmount;
-            }
-            else {
+            } else {
                 $total += $operation->getAmount();
             }
         }

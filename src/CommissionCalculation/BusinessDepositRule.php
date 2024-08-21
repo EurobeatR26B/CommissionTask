@@ -11,7 +11,7 @@ class BusinessDepositRule implements CommissionRuleInterface
 {
     public function __construct()
     {
-        
+
     }
 
     public function calculate(Operation $operation): float
@@ -24,7 +24,7 @@ class BusinessDepositRule implements CommissionRuleInterface
         return $commissionAmount;
     }
 
-    public function getTaxableAmount (Operation $operation): float
+    public function getTaxableAmount(Operation $operation): float
     {
         return $operation->getAmount();
     }

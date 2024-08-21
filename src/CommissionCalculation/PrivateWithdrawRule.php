@@ -69,29 +69,29 @@ class PrivateWithdrawRule implements CommissionRuleInterface
     {
         $exchangeRate = $this->userOperationTracker->currencyConverter->getExchangeRate($operationCurrency, FREE_COMMISSION_PRIVATE_USER_WITHDRAW_CURRENCY);
 
-            $operationInMainCurrency = $operationAmount * $exchangeRate;
+        $operationInMainCurrency = $operationAmount * $exchangeRate;
 
-            if ($userOperationCount <= FREE_COMMISSION_PRIVATE_WITHDRAW_OPERATION_COUNT_LIMIT) {
-                $totalAmountDoneByUser = $userOperationSum + $operationInMainCurrency;
+        if ($userOperationCount <= FREE_COMMISSION_PRIVATE_WITHDRAW_OPERATION_COUNT_LIMIT) {
+            $totalAmountDoneByUser = $userOperationSum + $operationInMainCurrency;
 
-                if ($totalAmountDoneByUser <= FREE_COMMISSION_PRIVATE_USER_WITHDRAW_AMOUNT) {
-                    return 0.00;
-                }
-            } else {
-                return $operationAmount;
-            }
-
-            if ($operationInMainCurrency > $remainingTaxCredits) {
-                if ($remainingTaxCredits <= 0) {
-                    return $operationAmount;
-                } else {
-                    $amountToTaxInMainCurrency = $operationInMainCurrency - $remainingTaxCredits;
-                    $amountToTaxInOperationCurrency = $amountToTaxInMainCurrency / $exchangeRate;
-
-                    return $amountToTaxInOperationCurrency;
-                }
-            } else {
+            if ($totalAmountDoneByUser <= FREE_COMMISSION_PRIVATE_USER_WITHDRAW_AMOUNT) {
                 return 0.00;
             }
+        } else {
+            return $operationAmount;
+        }
+
+        if ($operationInMainCurrency > $remainingTaxCredits) {
+            if ($remainingTaxCredits <= 0) {
+                return $operationAmount;
+            } else {
+                $amountToTaxInMainCurrency = $operationInMainCurrency - $remainingTaxCredits;
+                $amountToTaxInOperationCurrency = $amountToTaxInMainCurrency / $exchangeRate;
+
+                return $amountToTaxInOperationCurrency;
+            }
+        } else {
+            return 0.00;
+        }
     }
 }

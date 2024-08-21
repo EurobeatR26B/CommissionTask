@@ -32,10 +32,12 @@ class OperationRepositoryTest extends TestCase
 
         $operations = $this->repository->getAll();
 
-        $this->assertSame([
+        $this->assertSame(
+            [
             $operation->getUserID() => [$operation]
         ],
-        $operations);
+            $operations
+        );
     }
 
     public function testGetSingleOperationByUser()
@@ -138,7 +140,7 @@ class OperationRepositoryTest extends TestCase
             1.00,
             'EUR'
         );
-        
+
         $operation4 = new Operation(
             new DateTime('2024-08-01'),
             1,

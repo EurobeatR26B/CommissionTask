@@ -19,29 +19,25 @@ abstract class FileReader
 
         return $fileExtension === $this->supportedFileExtension;
     }
-    
+
     protected function validateFileCanBeOpened()
     {
-        if (!isset($this->fileName))
-        {
+        if (!isset($this->fileName)) {
             $message = "No file has been provided to read from";
             throw new InvalidArgumentException($message);
         }
 
         $file = fopen($this->fileName, "r");
-        
+
         return $file;
     }
 
     public function setFileName(string $fileName): self
-    {        
-        if ($this->validateFileExtension($fileName))
-        {
+    {
+        if ($this->validateFileExtension($fileName)) {
             $this->fileName = $fileName;
             return $this;
-        }
-        else 
-        {
+        } else {
             $message = sprintf("Provided file is not %s", $this->supportedFileExtension);
             throw new InvalidArgumentException($message);
         }
